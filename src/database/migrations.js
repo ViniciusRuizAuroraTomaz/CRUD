@@ -1,6 +1,7 @@
 import db from "../config/database.js";
 
-export async function migrate(){
+export async function migrate() {
+
 
     // products
     await db.exec(`
@@ -28,9 +29,9 @@ export async function migrate(){
         );
     `)
 
-    // history
+    // sales
     await db.exec(`
-        CREATE TABLE IF NOT EXISTS history (
+        CREATE TABLE IF NOT EXISTS sales (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             client_id INTEGER NOT NULL,
             product_id INTEGER NOT NULL,

@@ -1,4 +1,5 @@
 import * as productsRepository from "../repositories/product.repository.js"
+import * as salesService from "./sales.service.js"
 
 export async function GetAll() {
     const products = await productsRepository.GetAll()
@@ -20,8 +21,8 @@ export async function GetById(id) {
 
 export async function Create(product) {
     const nameAlreadyTaken = await productsRepository.GetAllByName(product.name)
-    if (nameAlreadyTaken){
-        throw new Error("Product name already Taken") 
+    if (nameAlreadyTaken) {
+        throw new Error("Product name already Taken")
     }
 
     productsRepository.Create(product)
@@ -29,7 +30,7 @@ export async function Create(product) {
 
 export async function GetLowStock() {
     const lowStockProducts = await productsRepository.GetLowStock()
-    if(lowStockProducts.length === 0){
+    if (lowStockProducts.length === 0) {
         throw new Error("There's no products in low stock")
     }
 
@@ -61,9 +62,9 @@ export async function Patch(id, product) {
         throw new Error("product does not Exists")
     }
 
-    const patchedproduct = {...productInDb, ...product}
+    const patchedproduct = { ...productInDb, ...product }
 
-    await productsRepository.Update(id ,patchedproduct)
+    await productsRepository.Update(id, patchedproduct)
 }
 
 export async function Delete(id) {
@@ -71,6 +72,12 @@ export async function Delete(id) {
     if (!productExists) {
         throw new Error("product does not Exists")
     }
+
+    const productInSales = await salesService.GetByProductId(id)
+    if (productInSales) {
+        throw new Error("This product is in sales and cannot be deleted")
+    }
+
 
     productsRepository.Delete(id)
 }

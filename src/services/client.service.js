@@ -1,4 +1,5 @@
 import * as clientsRepository from "../repositories/client.repository.js"
+import * as salesService from "./sales.service.js"
 
 export async function GetAll() {
     const clients = await clientsRepository.GetAll()
@@ -38,13 +39,13 @@ export async function GetByPhoneNumber(phone_number) {
 
 export async function Create(client) {
     const clientByEmail = await clientsRepository.GetByEmail(client.email)
-    if (clientByEmail){
-        throw new Error("Email already Taken") 
+    if (clientByEmail) {
+        throw new Error("Email already Taken")
     }
 
     const clientByCpf = await clientsRepository.GetByCpf(client.cpf)
-    if (clientByCpf){
-        throw new Error("Cpf already Registered") 
+    if (clientByCpf) {
+        throw new Error("Cpf already Registered")
     }
 
     clientsRepository.Create(client)
@@ -57,8 +58,8 @@ export async function Update(id, client) {
     }
 
     const clientByCpf = await clientsRepository.GetByCpf(client.cpf)
-    if (clientByCpf && clientByCpf.id !== id){
-        throw new Error("Cpf already Registered") 
+    if (clientByCpf && clientByCpf.id !== id) {
+        throw new Error("Cpf already Registered")
     }
 
     clientsRepository.Update(id, client)
@@ -70,7 +71,7 @@ export async function Patch(id, client) {
         throw new Error("Client does not Exists")
     }
 
-    const patchedClient = {...clientInDb, ...client}
+    const patchedClient = { ...clientInDb, ...client }
 
     clientsRepository.Update(id, patchedClient)
 }
@@ -80,6 +81,12 @@ export async function Delete(id) {
     if (!clientExists) {
         throw new Error("Client does not Exists")
     }
+
+    const clientHasSales = await salesService.GetByClientId(id)
+    if (clientHasSales) {
+        throw new Error("This client has sales and cannot be deleted")
+    }
+
 
     clientsRepository.Delete(id)
 }

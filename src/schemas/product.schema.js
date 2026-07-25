@@ -18,7 +18,10 @@ export const ProductIdSchema = z.object({
 })
 
 export const UpdateProductSchema = z.object({
-    body: CreateProductSchema.shape.body.extend({qty_in_stock: z.number().int("stock must be an integer number").min(0, "stock cannot be a negative value")}),
+    body: CreateProductSchema.shape.body.extend({
+        qty_in_stock: z.number().int("stock must be an integer number").min(0, "stock cannot be a negative value"),
+        description: z.string().trim()
+    }),
     params: ProductIdSchema.shape.params
 })
 

@@ -1,20 +1,20 @@
-import * as historyRepository from "../repositories/history.repository.js";
+import * as salesRepository from "../repositories/sales.repository.js";
 import * as clientsRepository from "../repositories/client.repository.js"
 import * as productsRepository from "../repositories/product.repository.js"
 import db from "../config/database.js";
 
 export async function GetAll() {
-    const history = await historyRepository.GetAll();
+    const sales = await salesRepository.GetAll();
 
-    if (history.length === 0) {
-        throw new Error("There's no sales history.");
+    if (sales.length === 0) {
+        throw new Error("There's no sales sales.");
     }
 
-    return history;
+    return sales;
 }
 
 export async function GetById(id) {
-    const sale = await historyRepository.GetById(id);
+    const sale = await salesRepository.GetById(id);
 
     if (!sale) {
         throw new Error("Sale not found.");
@@ -24,20 +24,20 @@ export async function GetById(id) {
 }
 
 export async function GetByClientId(id) {
-    const sales = await historyRepository.GetByClientId(id);
+    const sales = await salesRepository.GetByClientId(id);
 
     if (sales.length === 0) {
-        throw new Error("This client has no sales history.");
+        throw new Error("This client has no sales sales.");
     }
 
     return sales;
 }
 
 export async function GetByProductId(id) {
-    const sales = await historyRepository.GetByProductId(id);
+    const sales = await salesRepository.GetByProductId(id);
 
     if (sales.length === 0) {
-        throw new Error("This product has no sales history.");
+        throw new Error("This product has no sales sales.");
     }
 
     return sales;
@@ -53,19 +53,19 @@ export async function CreateSale(sale) {
     if (!client) {
         throw new Error("Client not Found")
     }
-    if(product.qty_in_stock < sale.qty){
+    if (product.qty_in_stock < sale.qty) {
         throw new Error("Insufficient stock")
     }
-    
-    const newSale = {...sale, total_price: product.selling_price * sale.qty}
+
+    const newSale = { ...sale, total_price: product.selling_price * sale.qty }
 
     await db.run("BEGIN TRANSACTION")
 
-    try{
-        await historyRepository.CreateSale(newSale)
+    try {
+        await salesRepository.CreateSale(newSale)
         await productsRepository.DescreaseStock(product.id, sale.qty)
         await db.run("COMMIT")
-    }catch(error){
+    } catch (error) {
         await db.run("ROLLBACK")
         throw error;
     }
