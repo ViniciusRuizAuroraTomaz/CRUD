@@ -73,7 +73,7 @@ export async function Delete(id) {
         throw new Error("product does not Exists")
     }
 
-    const hasSales = await salesService.HasSalesByClientId(id)
+    const hasSales = await salesService.HasSalesByProductId(id)
     if (hasSales) {
         throw new Error("This product is in sales and cannot be deleted")
     }
