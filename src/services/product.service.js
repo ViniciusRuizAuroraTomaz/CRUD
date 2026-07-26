@@ -38,7 +38,7 @@ export async function GetLowStock() {
 }
 
 export async function GetTotalProductsInStock() {
-    const result = productsRepository.GetTotalProductsInStock()
+    const result = await productsRepository.GetTotalProductsInStock()
     return result
 }
 
