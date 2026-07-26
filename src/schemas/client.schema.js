@@ -30,7 +30,10 @@ export const ClientPhoneNumberSchema = z.object({
 })
 
 export const UpdateClientSchema = z.object({
-    body: CreateClientSchema.shape.body,
+    body: CreateClientSchema.shape.body.extend({
+        address: z.string().trim(),
+        type: z.enum(["normal", "vip"])
+    }),
     params: ClientIdSchema.shape.params
 })
 

@@ -1,5 +1,5 @@
 import * as clientsRepository from "../repositories/client.repository.js"
-import * as salesService from "./sales.service.js"
+import { GetByClientId } from "../repositories/sales.repository.js"
 
 export async function GetAll() {
     const clients = await clientsRepository.GetAll()
@@ -82,8 +82,8 @@ export async function Delete(id) {
         throw new Error("Client does not Exists")
     }
 
-    const clientHasSales = await salesService.GetByClientId(id)
-    if (clientHasSales) {
+    const clientHasSales = await GetByClientId(id)
+    if (clientHasSales.length) {
         throw new Error("This client has sales and cannot be deleted")
     }
 

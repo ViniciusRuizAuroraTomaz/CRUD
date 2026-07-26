@@ -26,7 +26,7 @@ export async function getByClientId(req, res) {
     const clientId = req.validated.params.client_id
 
     const salesByClientId = await salesService.GetByClientId(clientId)
-    return res.status(200).send(saleByClientId)
+    return res.status(200).send(salesByClientId)
 }
 
 export async function getByProductId(req, res) {

@@ -7,7 +7,7 @@ export async function GetAll() {
     const sales = await salesRepository.GetAll();
 
     if (sales.length === 0) {
-        throw new Error("There's no sales sales.");
+        throw new Error("There's no sales.");
     }
 
     return sales;
@@ -27,7 +27,7 @@ export async function GetByClientId(id) {
     const sales = await salesRepository.GetByClientId(id);
 
     if (sales.length === 0) {
-        throw new Error("This client has no sales sales.");
+        throw new Error("This client has no sales.");
     }
 
     return sales;
@@ -37,7 +37,7 @@ export async function GetByProductId(id) {
     const sales = await salesRepository.GetByProductId(id);
 
     if (sales.length === 0) {
-        throw new Error("This product has no sales sales.");
+        throw new Error("This product has no sales.");
     }
 
     return sales;
