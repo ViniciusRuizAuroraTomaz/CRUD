@@ -62,7 +62,7 @@ export async function Update(id, client) {
         throw new Error("Cpf already Registered")
     }
 
-    clientsRepository.Update(id, client)
+    await clientsRepository.Update(id, client)
 }
 
 export async function Patch(id, client) {

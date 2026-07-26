@@ -21,7 +21,7 @@ export async function update(req, res) {
     const id = req.validated.params.id
 
     await clientService.Update(id, clientData)
-    return res.status(204).json(createResponse(true, "client updated successfully"))
+    return res.status(200).json(createResponse(true, "client updated successfully"))
 }
 
 export async function patch(req, res) {
@@ -29,7 +29,7 @@ export async function patch(req, res) {
     const id = req.validated.params.id
 
     await clientService.Patch(id, clientData)
-    return res.status(204).json(createResponse(true, "client patched successfully"))
+    return res.status(200).json(createResponse(true, "client patched successfully"))
 
 }
 

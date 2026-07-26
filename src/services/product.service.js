@@ -20,12 +20,12 @@ export async function GetById(id) {
 }
 
 export async function Create(product) {
-    const nameAlreadyTaken = await productsRepository.GetAllByName(product.name)
+    const nameAlreadyTaken = await productsRepository.GetByName(product.name)
     if (nameAlreadyTaken) {
         throw new Error("Product name already Taken")
     }
 
-    productsRepository.Create(product)
+    await productsRepository.Create(product)
 }
 
 export async function GetLowStock() {
@@ -48,8 +48,8 @@ export async function GetTotalValueInStock() {
 }
 
 export async function Update(id, product) {
-    const productExists = await productsRepository.GetById()
-    if (productExists) {
+    const productExists = await productsRepository.GetById(id)
+    if (!productExists) {
         throw new Error("product does not Exists")
     }
 
@@ -73,8 +73,8 @@ export async function Delete(id) {
         throw new Error("product does not Exists")
     }
 
-    const productInSales = await salesService.GetByProductId(id)
-    if (productInSales) {
+    const hasSales = await salesService.HasSalesByProductId(id)
+    if (hasSales) {
         throw new Error("This product is in sales and cannot be deleted")
     }
 

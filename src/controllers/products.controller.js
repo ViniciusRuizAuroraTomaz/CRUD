@@ -22,7 +22,7 @@ export async function update(req, res) {
     const id = req.validated.params.id
 
     await productService.Update(id, productData)
-    return res.status(204).json(createResponse(true, "Product updated successfully"))
+    return res.status(200).json(createResponse(true, "Product updated successfully"))
 }
 
 export async function patch(req, res) {
@@ -30,7 +30,7 @@ export async function patch(req, res) {
     const id = req.validated.params.id
 
     await productService.Patch(id, productData)
-    return res.status(204).json(createResponse(true, "Product patched successfully"))
+    return res.status(200).json(createResponse(true, "Product patched successfully"))
 
 }
 
