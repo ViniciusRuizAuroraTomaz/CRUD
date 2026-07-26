@@ -79,5 +79,5 @@ export async function Delete(id) {
     }
 
 
-    productsRepository.Delete(id)
+    await productsRepository.Delete(id)
 }

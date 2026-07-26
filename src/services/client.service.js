@@ -1,5 +1,5 @@
 import * as clientsRepository from "../repositories/client.repository.js"
-import { GetByClientId } from "../repositories/sales.repository.js"
+import { HasSalesByProductId } from "./sales.service.js"
 
 export async function GetAll() {
     const clients = await clientsRepository.GetAll()
@@ -48,7 +48,7 @@ export async function Create(client) {
         throw new Error("Cpf already Registered")
     }
 
-    clientsRepository.Create(client)
+    await clientsRepository.Create(client)
 }
 
 export async function Update(id, client) {
@@ -73,7 +73,7 @@ export async function Patch(id, client) {
 
     const patchedClient = { ...clientInDb, ...client }
 
-    clientsRepository.Update(id, patchedClient)
+    await clientsRepository.Update(id, patchedClient)
 }
 
 export async function Delete(id) {
@@ -82,11 +82,11 @@ export async function Delete(id) {
         throw new Error("Client does not Exists")
     }
 
-    const clientHasSales = await GetByClientId(id)
-    if (clientHasSales.length) {
+    const hasSales = await HasSalesByProductId(id)
+    if (hasSales) {
         throw new Error("This client has sales and cannot be deleted")
     }
 
 
-    clientsRepository.Delete(id)
+    await clientsRepository.Delete(id)
 }
