@@ -48,6 +48,11 @@ export async function HasSalesByProductId(id) {
     return sales.length > 0
 }
 
+export async function HasSalesByClientId(id) {
+    const sales = await salesRepository.GetByClientId(id)
+    return sales.length > 0
+}
+
 export async function CreateSale(sale) {
     const product = await productsRepository.GetById(sale.product_id)
     const client = await clientsRepository.GetById(sale.client_id)

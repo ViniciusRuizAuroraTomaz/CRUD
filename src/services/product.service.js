@@ -43,7 +43,7 @@ export async function GetTotalProductsInStock() {
 }
 
 export async function GetTotalValueInStock() {
-    const result = productsRepository.GetTotalValueInStock()
+    const result = await productsRepository.GetTotalValueInStock()
     return result
 }
 
@@ -53,7 +53,7 @@ export async function Update(id, product) {
         throw new Error("product does not Exists")
     }
 
-    productsRepository.Update(id, product)
+    await productsRepository.Update(id, product)
 }
 
 export async function Patch(id, product) {
@@ -73,7 +73,7 @@ export async function Delete(id) {
         throw new Error("product does not Exists")
     }
 
-    const hasSales = await salesService.HasSalesByProductId(id)
+    const hasSales = await salesService.HasSalesByClientId(id)
     if (hasSales) {
         throw new Error("This product is in sales and cannot be deleted")
     }
