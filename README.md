@@ -199,7 +199,7 @@ PATCH /api/products/1
 
 ```json
 {
-  "price": 200
+  "selling_price": 200
 }
 ```
 
@@ -223,4 +223,293 @@ DELETE /api/products/{id}
 DELETE /api/products/1
 ```
 
+```markdown
+# Clients Routes
 
+Base URL:
+
+```
+localhost:3000/api/clients
+```
+
+## GET Requests
+
+### Get all clients
+
+Returns a list of all clients.
+
+**Endpoint:**
+
+```http
+GET /api/clients
+```
+
+---
+
+### Get client by ID
+
+Returns a specific client using its ID.
+
+**Endpoint:**
+
+```http
+GET /api/clients/{id}
+```
+
+**Example:**
+
+```http
+GET /api/clients/1
+```
+
+---
+
+### Get clients by name
+
+Returns clients that match the given name.
+
+**Endpoint:**
+
+```http
+GET /api/clients/name/{name}
+```
+
+**Example:**
+
+```http
+GET /api/clients/name/João
+```
+
+---
+
+### Get clients by phone number
+
+Returns clients that match the given phone number.
+
+**Endpoint:**
+
+```http
+GET /api/clients/phone-number/{phone_number}
+```
+
+**Example:**
+
+```http
+GET /api/clients/phone-number/+5511999999999
+```
+
+---
+
+# POST Requests
+
+## Create a client
+
+Creates a new client.
+
+**Endpoint:**
+
+```http
+POST /api/clients
+```
+
+**Request Body example:**
+
+```json
+{
+  "name": "João Silva",
+  "type": "normal",
+  "phone_number": "+5511999999999",
+  "email": "joao@email.com",
+  "cpf": "12345678901",
+  "address": "Rua das Flores, 123"
+}
+```
+
+> `type` is optional (`"normal"` or `"vip"`, default: `"normal"`)  
+> `cpf` must be unique and contain exactly 11 digits  
+> `address` is optional
+
+---
+
+# PUT Requests
+
+## Update a client
+
+Updates all client information.
+
+**Endpoint:**
+
+```http
+PUT /api/clients/{id}
+```
+
+**Example:**
+
+```http
+PUT /api/clients/1
+```
+
+**Request Body example:**
+
+```json
+{
+  "name": "João Silva",
+  "type": "vip",
+  "phone_number": "+5511999999999",
+  "email": "joao@email.com",
+  "cpf": "12345678901",
+  "address": "Rua das Flores, 123"
+}
+```
+
+---
+
+# PATCH Requests
+
+## Partially update a client
+
+Updates only the provided client fields.
+
+**Endpoint:**
+
+```http
+PATCH /api/clients/{id}
+```
+
+**Example:**
+
+```http
+PATCH /api/clients/1
+```
+
+**Request Body example:**
+
+```json
+{
+  "type": "vip"
+}
+```
+
+---
+
+# DELETE Requests
+
+## Delete a client
+
+Removes a client from the database.  
+A client cannot be deleted if they have associated sales.
+
+**Endpoint:**
+
+```http
+DELETE /api/clients/{id}
+```
+
+**Example:**
+
+```http
+DELETE /api/clients/1
+```
+
+---
+
+# Sales Routes
+
+Base URL:
+
+```
+localhost:3000/api/sales
+```
+
+## GET Requests
+
+### Get all sales
+
+Returns a list of all sales ordered by most recent.
+
+**Endpoint:**
+
+```http
+GET /api/sales
+```
+
+---
+
+### Get sale by ID
+
+Returns a specific sale using its ID.
+
+**Endpoint:**
+
+```http
+GET /api/sales/{id}
+```
+
+**Example:**
+
+```http
+GET /api/sales/1
+```
+
+---
+
+### Get sales by product ID
+
+Returns all sales related to a specific product.
+
+**Endpoint:**
+
+```http
+GET /api/sales/product/{product_id}
+```
+
+**Example:**
+
+```http
+GET /api/sales/product/1
+```
+
+---
+
+### Get sales by client ID
+
+Returns all sales related to a specific client.
+
+**Endpoint:**
+
+```http
+GET /api/sales/client/{client_id}
+```
+
+**Example:**
+
+```http
+GET /api/sales/client/1
+```
+
+---
+
+# POST Requests
+
+## Create a sale
+
+Creates a new sale.  
+The system automatically calculates the total price and decreases the product stock.  
+It also validates if the product and client exist, and if there is enough stock.
+
+**Endpoint:**
+
+```http
+POST /api/sales
+```
+
+**Request Body example:**
+
+```json
+{
+  "client_id": 1,
+  "product_id": 1,
+  "qty": 2
+}
+```
+````
